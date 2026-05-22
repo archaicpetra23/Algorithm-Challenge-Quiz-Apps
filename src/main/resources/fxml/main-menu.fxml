@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.algorithmquiz.controller.MainMenuController"
+      styleClass="root-bg" prefWidth="960" prefHeight="680">
+
+    <!-- Navbar -->
+    <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+        <Label styleClass="logo-icon" text="AQ"/>
+        <Label styleClass="logo-text" text="Algorithm Quiz"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button styleClass="nav-btn" onAction="#onStartQuiz">
+            <graphic><FontIcon iconLiteral="fas-home" iconSize="13"/></graphic>
+            <text>Home</text>
+        </Button>
+        <Button styleClass="nav-btn" onAction="#onLearnAlgorithm">
+            <graphic><FontIcon iconLiteral="fas-book" iconSize="13"/></graphic>
+            <text>Belajar</text>
+        </Button>
+        <Button styleClass="nav-btn" onAction="#onLeaderboard">
+            <graphic><FontIcon iconLiteral="fas-trophy" iconSize="13"/></graphic>
+            <text>Leaderboard</text>
+        </Button>
+    </HBox>
+
+    <!-- Hero Section -->
+    <VBox styleClass="hero-section" alignment="CENTER" VBox.vgrow="ALWAYS" spacing="0">
+
+        <!-- Tag -->
+        <HBox alignment="CENTER">
+            <Label styleClass="hero-tag">
+                <graphic><FontIcon iconLiteral="fas-crosshairs" iconSize="12"/></graphic>
+                <text>Edukasi Algoritma Interaktif</text>
+            </Label>
+        </HBox>
+
+        <!-- Title -->
+        <Label styleClass="hero-title" text="Algorithm" wrapText="true"/>
+        <Label styleClass="hero-title-accent" text="Challenge Quiz"/>
+
+        <!-- Subtitle -->
+        <Label styleClass="hero-subtitle" wrapText="true" maxWidth="520"
+               text="Uji pemahamanmu tentang algoritma dan struktur data melalui quiz seru, visualisasi interaktif, dan tantangan drag-and-drop!"/>
+
+        <!-- Stats bar -->
+        <HBox styleClass="stats-bar" alignment="CENTER" spacing="32">
+            <VBox alignment="CENTER" spacing="2">
+                <Label styleClass="stat-num" fx:id="lblTotalQuestions" text="30"/>
+                <Label styleClass="stat-label" text="Total Soal"/>
+            </VBox>
+            <Separator orientation="VERTICAL"/>
+            <VBox alignment="CENTER" spacing="2">
+                <Label styleClass="stat-num" text="3"/>
+                <Label styleClass="stat-label" text="Level"/>
+            </VBox>
+            <Separator orientation="VERTICAL"/>
+            <VBox alignment="CENTER" spacing="2">
+                <Label styleClass="stat-num" text="4"/>
+                <Label styleClass="stat-label" text="Visualisasi"/>
+            </VBox>
+            <Separator orientation="VERTICAL"/>
+            <VBox alignment="CENTER" spacing="2">
+                <Label styleClass="stat-num" fx:id="lblTopScore" text="-"/>
+                <Label styleClass="stat-label" text="Top Score"/>
+            </VBox>
+        </HBox>
+
+        <!-- CTA Buttons -->
+        <HBox alignment="CENTER" spacing="16">
+            <Button styleClass="btn-primary-lg" onAction="#onStartQuiz">
+                <graphic><FontIcon iconLiteral="fas-play-circle" iconSize="16"/></graphic>
+                <text>Mulai Quiz</text>
+            </Button>
+            <Button styleClass="btn-secondary-lg" onAction="#onLearnAlgorithm">
+                <graphic><FontIcon iconLiteral="fas-book-open" iconSize="16"/></graphic>
+                <text>Pelajari Algoritma</text>
+            </Button>
+        </HBox>
+
+        <!-- Feature cards -->
+        <HBox alignment="CENTER" spacing="16" maxWidth="800">
+            <VBox styleClass="feature-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                <FontIcon iconLiteral="fas-chart-bar" iconSize="32" styleClass="feature-icon-img"/>
+                <Label styleClass="feature-title" text="Sorting Visualization"/>
+                <Label styleClass="feature-desc" text="Bubble, Selection, Insertion Sort" wrapText="true"/>
+            </VBox>
+            <VBox styleClass="feature-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                <FontIcon iconLiteral="fas-project-diagram" iconSize="32" styleClass="feature-icon-img"/>
+                <Label styleClass="feature-title" text="Graph Traversal"/>
+                <Label styleClass="feature-desc" text="BFS &amp; DFS dengan animasi" wrapText="true"/>
+            </VBox>
+            <VBox styleClass="feature-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                <FontIcon iconLiteral="fas-layer-group" iconSize="32" styleClass="feature-icon-img"/>
+                <Label styleClass="feature-title" text="Stack &amp; Queue"/>
+                <Label styleClass="feature-desc" text="Visualisasi push/pop interaktif" wrapText="true"/>
+            </VBox>
+            <VBox styleClass="feature-card" alignment="CENTER" spacing="8" HBox.hgrow="ALWAYS">
+                <FontIcon iconLiteral="fas-puzzle-piece" iconSize="32" styleClass="feature-icon-img"/>
+                <Label styleClass="feature-title" text="Drag &amp; Drop"/>
+                <Label styleClass="feature-desc" text="Susun langkah algoritma" wrapText="true"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Footer -->
+    <HBox styleClass="footer" alignment="CENTER" spacing="16">
+        <Label styleClass="footer-text" text="Algorithm Challenge Quiz — UAS Project Pemrograman Berorientasi Objek"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button styleClass="footer-btn" onAction="#onExit">
+            <graphic><FontIcon iconLiteral="fas-power-off" iconSize="12"/></graphic>
+            <text>Keluar</text>
+        </Button>
+    </HBox>
+</VBox>

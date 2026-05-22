@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.algorithmquiz.controller.QuizController"
+      styleClass="root-bg" prefWidth="960" prefHeight="680">
+
+    <!-- Navbar -->
+    <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+        <Label styleClass="logo-icon" text="AQ"/>
+        <Label fx:id="lblQuestionNum" styleClass="quiz-num-label" text="Soal 1 / 10"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblLevel" styleClass="badge-easy" text="EASY"/>
+        <Label fx:id="lblScore" styleClass="score-label" text="Score: 0"/>
+        <HBox styleClass="timer-box" alignment="CENTER" spacing="6">
+            <FontIcon iconLiteral="fas-clock" iconSize="13" styleClass="timer-icon"/>
+            <Label fx:id="lblTimer" styleClass="timer-label" text="30s"/>
+        </HBox>
+        <Button styleClass="nav-btn-danger" onAction="#onQuit">
+            <graphic><FontIcon iconLiteral="fas-times" iconSize="13"/></graphic>
+            <text>Keluar</text>
+        </Button>
+    </HBox>
+
+    <!-- Progress bar -->
+    <ProgressBar fx:id="progressBar" styleClass="quiz-progress" maxWidth="Infinity" progress="0"/>
+
+    <!-- Main content -->
+    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="scroll-transparent">
+        <VBox styleClass="quiz-content" spacing="20">
+
+            <!-- Question card -->
+            <VBox styleClass="question-card" spacing="12">
+                <HBox alignment="CENTER_LEFT" spacing="6">
+                    <FontIcon iconLiteral="fas-map-marker-alt" iconSize="11" styleClass="category-icon"/>
+                    <Label fx:id="lblCategory" styleClass="question-category" text="Algoritma"/>
+                </HBox>
+                <Label fx:id="lblQuestionText" styleClass="question-text" wrapText="true"
+                       text="Pertanyaan akan muncul di sini..."/>
+            </VBox>
+
+            <!-- Answer buttons -->
+            <GridPane styleClass="answers-grid" hgap="12" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+                <Button fx:id="btnA" styleClass="answer-btn" maxWidth="Infinity" maxHeight="Infinity"
+                        wrapText="true" onAction="#onAnswerA" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <Button fx:id="btnB" styleClass="answer-btn" maxWidth="Infinity" maxHeight="Infinity"
+                        wrapText="true" onAction="#onAnswerB" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Button fx:id="btnC" styleClass="answer-btn" maxWidth="Infinity" maxHeight="Infinity"
+                        wrapText="true" onAction="#onAnswerC" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <Button fx:id="btnD" styleClass="answer-btn" maxWidth="Infinity" maxHeight="Infinity"
+                        wrapText="true" onAction="#onAnswerD" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            </GridPane>
+
+            <!-- Feedback panel -->
+            <VBox fx:id="feedbackBox" styleClass="feedback-box" spacing="6" visible="false" managed="false">
+                <Label fx:id="lblFeedbackTitle" styleClass="feedback-title" text=""/>
+                <Label fx:id="lblFeedbackExplain" styleClass="feedback-explain" text="" wrapText="true"/>
+            </VBox>
+
+            <!-- Action bar -->
+            <HBox fx:id="actionBar" alignment="CENTER_RIGHT" spacing="12" visible="false" managed="false">
+                <Button fx:id="btnNext" styleClass="btn-primary" onAction="#onNext">
+                    <text>Soal Berikutnya</text>
+                    <graphic><FontIcon iconLiteral="fas-arrow-right" iconSize="12"/></graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</VBox>

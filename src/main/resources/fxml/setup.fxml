@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.algorithmquiz.controller.SetupController"
+      styleClass="root-bg" prefWidth="960" prefHeight="680">
+
+    <!-- Navbar -->
+    <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+        <Label styleClass="logo-icon" text="AQ"/>
+        <Label styleClass="logo-text" text="Algorithm Quiz"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button styleClass="nav-btn" onAction="#onBack">
+            <graphic><FontIcon iconLiteral="fas-arrow-left" iconSize="13"/></graphic>
+            <text>Kembali</text>
+        </Button>
+    </HBox>
+
+    <!-- Content -->
+    <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="0">
+        <VBox styleClass="setup-card" maxWidth="480" alignment="CENTER_LEFT" spacing="20">
+
+            <FontIcon iconLiteral="fas-gamepad" iconSize="40" styleClass="setup-icon-img"/>
+            <Label styleClass="setup-title" text="Setup Quiz"/>
+            <Label styleClass="setup-sub" text="Masukkan nama dan pilih level kesulitan"/>
+
+            <!-- Name input -->
+            <VBox spacing="6">
+                <Label styleClass="form-label" text="Nama Pemain"/>
+                <TextField fx:id="tfPlayerName" styleClass="form-input"
+                           promptText="Masukkan nama kamu..."/>
+            </VBox>
+
+            <!-- Level selection -->
+            <VBox spacing="10">
+                <Label styleClass="form-label" text="Level Kesulitan"/>
+
+                <VBox fx:id="cardEasy" styleClass="level-card" onMouseClicked="#onSelectEasy" spacing="4">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <FontIcon iconLiteral="fas-seedling" iconSize="20" styleClass="level-icon-img level-icon-easy"/>
+                        <VBox>
+                            <Label styleClass="level-name" text="Easy"/>
+                            <Label styleClass="level-desc" text="10 soal  •  30 detik/soal  •  Dasar algoritma"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label styleClass="badge-easy" text="MUDAH"/>
+                    </HBox>
+                </VBox>
+
+                <VBox fx:id="cardMedium" styleClass="level-card" onMouseClicked="#onSelectMedium" spacing="4">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <FontIcon iconLiteral="fas-bolt" iconSize="20" styleClass="level-icon-img level-icon-medium"/>
+                        <VBox>
+                            <Label styleClass="level-name" text="Medium"/>
+                            <Label styleClass="level-desc" text="10 soal  •  25 detik/soal  •  Sorting &amp; Graph"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label styleClass="badge-medium" text="SEDANG"/>
+                    </HBox>
+                </VBox>
+
+                <VBox fx:id="cardHard" styleClass="level-card" onMouseClicked="#onSelectHard" spacing="4">
+                    <HBox alignment="CENTER_LEFT" spacing="12">
+                        <FontIcon iconLiteral="fas-fire" iconSize="20" styleClass="level-icon-img level-icon-hard"/>
+                        <VBox>
+                            <Label styleClass="level-name" text="Hard"/>
+                            <Label styleClass="level-desc" text="10 soal  •  20 detik/soal  •  Kompleksitas lanjut"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label styleClass="badge-hard" text="SULIT"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- Error -->
+            <Label fx:id="lblError" styleClass="error-label" text="" visible="false" managed="false"/>
+
+            <!-- Start button -->
+            <Button styleClass="btn-primary-lg" maxWidth="Infinity" onAction="#onStartQuiz">
+                <graphic><FontIcon iconLiteral="fas-play-circle" iconSize="15"/></graphic>
+                <text>Mulai Quiz</text>
+            </Button>
+        </VBox>
+    </VBox>
+</VBox>

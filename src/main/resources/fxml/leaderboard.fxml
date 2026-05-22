@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.algorithmquiz.controller.LeaderboardController"
+      styleClass="root-bg" prefWidth="960" prefHeight="680">
+
+    <!-- Navbar -->
+    <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+        <Label styleClass="logo-icon" text="AQ"/>
+        <HBox alignment="CENTER_LEFT" spacing="8">
+            <FontIcon iconLiteral="fas-trophy" iconSize="16" styleClass="icon-red"/>
+            <Label styleClass="logo-text" text="Leaderboard"/>
+        </HBox>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button styleClass="nav-btn" onAction="#onBack">
+            <graphic><FontIcon iconLiteral="fas-arrow-left" iconSize="13"/></graphic>
+            <text>Kembali</text>
+        </Button>
+    </HBox>
+
+    <VBox styleClass="page-content" VBox.vgrow="ALWAYS" spacing="20">
+
+        <!-- Controls -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Label styleClass="section-title" text="Top Pemain"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label styleClass="form-label" text="Filter Level:"/>
+            <ComboBox fx:id="cmbFilter" styleClass="combo-box" prefWidth="160"/>
+            <Button styleClass="btn-secondary" onAction="#onRefresh">
+                <graphic><FontIcon iconLiteral="fas-sync" iconSize="12"/></graphic>
+                <text>Refresh</text>
+            </Button>
+            <Button styleClass="btn-danger-sm" onAction="#onClearAll">
+                <graphic><FontIcon iconLiteral="fas-trash" iconSize="12"/></graphic>
+                <text>Hapus Semua</text>
+            </Button>
+        </HBox>
+
+        <!-- Empty label -->
+        <Label fx:id="lblEmpty" styleClass="empty-label"
+               text="Belum ada data. Ayo main quiz dulu!" visible="false" managed="false"/>
+
+        <!-- Table -->
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS" styleClass="leaderboard-table">
+            <columns>
+                <TableColumn fx:id="colRank" text="Rank" prefWidth="60"/>
+                <TableColumn fx:id="colName" text="Nama Pemain" prefWidth="220"/>
+                <TableColumn fx:id="colScore" text="Skor" prefWidth="100"/>
+                <TableColumn fx:id="colLevel" text="Level" prefWidth="100"/>
+                <TableColumn fx:id="colDate" text="Tanggal" prefWidth="220"/>
+            </columns>
+            <placeholder>
+                <Label styleClass="empty-label" text="Belum ada data leaderboard"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>

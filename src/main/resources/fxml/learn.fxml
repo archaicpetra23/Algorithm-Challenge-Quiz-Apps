@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.algorithmquiz.controller.LearnController"
+      styleClass="root-bg" prefWidth="960" prefHeight="680">
+
+    <!-- Navbar -->
+    <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="16">
+        <Label styleClass="logo-icon" text="AQ"/>
+        <Label styleClass="logo-text" text="Belajar Algoritma"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button styleClass="nav-btn" onAction="#onBack">
+            <graphic><FontIcon iconLiteral="fas-arrow-left" iconSize="13"/></graphic>
+            <text>Kembali</text>
+        </Button>
+    </HBox>
+
+    <!-- Tab buttons -->
+    <HBox styleClass="tab-bar" alignment="CENTER_LEFT" spacing="4">
+        <Button fx:id="tabSorting" styleClass="tab-btn,tab-active" onAction="#onTabSorting">
+            <graphic><FontIcon iconLiteral="fas-chart-bar" iconSize="13"/></graphic>
+            <text>Sorting</text>
+        </Button>
+        <Button fx:id="tabGraph" styleClass="tab-btn" onAction="#onTabGraph">
+            <graphic><FontIcon iconLiteral="fas-project-diagram" iconSize="13"/></graphic>
+            <text>Graph</text>
+        </Button>
+        <Button fx:id="tabStructure" styleClass="tab-btn" onAction="#onTabStructure">
+            <graphic><FontIcon iconLiteral="fas-layer-group" iconSize="13"/></graphic>
+            <text>Stack &amp; Queue</text>
+        </Button>
+        <Button fx:id="tabDragDrop" styleClass="tab-btn" onAction="#onTabDragDrop">
+            <graphic><FontIcon iconLiteral="fas-puzzle-piece" iconSize="13"/></graphic>
+            <text>Drag &amp; Drop</text>
+        </Button>
+    </HBox>
+
+    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="scroll-transparent">
+        <VBox spacing="0">
+
+            <!-- SORTING PANEL -->
+            <VBox fx:id="sortingPane" styleClass="viz-panel" spacing="16" visible="true" managed="true">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label styleClass="viz-title" text="Sorting Visualization"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="cmbSortAlgo" styleClass="combo-box" prefWidth="160"/>
+                    <Label styleClass="form-label" text="Kecepatan:"/>
+                    <!-- Inverted: slider max = fastest. min=0.5(slow), max=10(fast) -->
+                    <Slider fx:id="speedSlider" min="0.5" max="10" value="2" prefWidth="120" showTickMarks="true"/>
+                    <Label styleClass="viz-step-label" text="Lambat → Cepat"/>
+                </HBox>
+                <Canvas fx:id="sortingCanvas" width="860" height="240" styleClass="viz-canvas"/>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Button fx:id="btnSortPlay" styleClass="btn-primary" onAction="#onSortPlay">
+                        <graphic><FontIcon iconLiteral="fas-play" iconSize="12"/></graphic>
+                        <text>Play</text>
+                    </Button>
+                    <Button fx:id="btnSortStep" styleClass="btn-secondary" onAction="#onSortStep">
+                        <graphic><FontIcon iconLiteral="fas-step-forward" iconSize="12"/></graphic>
+                        <text>Step</text>
+                    </Button>
+                    <Button fx:id="btnSortReset" styleClass="btn-ghost" onAction="#onSortReset">
+                        <graphic><FontIcon iconLiteral="fas-undo" iconSize="12"/></graphic>
+                        <text>Reset</text>
+                    </Button>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblSortStep" styleClass="viz-step-label" text="Tekan Play untuk mulai"/>
+                </HBox>
+            </VBox>
+
+            <!-- GRAPH PANEL -->
+            <VBox fx:id="graphPane" styleClass="viz-panel" spacing="16" visible="false" managed="false">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label styleClass="viz-title" text="Graph Traversal"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <!-- Items diisi oleh setupGraph() di controller -->
+                    <ComboBox fx:id="cmbGraphAlgo" styleClass="combo-box" prefWidth="120"/>
+                    <Button fx:id="btnGraphPlay" styleClass="btn-primary" onAction="#onGraphPlay">
+                        <graphic><FontIcon iconLiteral="fas-play" iconSize="12"/></graphic>
+                        <text>Play</text>
+                    </Button>
+                    <Button fx:id="btnGraphReset" styleClass="btn-ghost" onAction="#onGraphReset">
+                        <graphic><FontIcon iconLiteral="fas-undo" iconSize="12"/></graphic>
+                        <text>Reset</text>
+                    </Button>
+                </HBox>
+                <!-- Height 270 agar semua node muat -->
+                <Canvas fx:id="graphCanvas" width="860" height="270" styleClass="viz-canvas"/>
+                <Label fx:id="lblGraphInfo" styleClass="viz-step-label" text="Tekan Play untuk mulai traversal"/>
+            </VBox>
+
+            <!-- STRUCTURE PANEL -->
+            <VBox fx:id="structurePane" styleClass="viz-panel" spacing="16" visible="false" managed="false">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label styleClass="viz-title" text="Stack &amp; Queue"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="cmbStructType" styleClass="combo-box" prefWidth="120"/>
+                </HBox>
+
+                <!-- Preset number buttons -->
+                <VBox spacing="6">
+                    <Label styleClass="form-label" text="Angka cepat (klik untuk push/enqueue):"/>
+                    <HBox spacing="8">
+                        <Button styleClass="preset-btn" text="1"   onAction="#onPreset1"/>
+                        <Button styleClass="preset-btn" text="5"   onAction="#onPreset5"/>
+                        <Button styleClass="preset-btn" text="10"  onAction="#onPreset10"/>
+                        <Button styleClass="preset-btn" text="25"  onAction="#onPreset25"/>
+                        <Button styleClass="preset-btn" text="50"  onAction="#onPreset50"/>
+                        <Button styleClass="preset-btn" text="100" onAction="#onPreset100"/>
+                    </HBox>
+                </VBox>
+
+                <Canvas fx:id="structCanvas" width="860" height="210" styleClass="viz-canvas"/>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <TextField fx:id="tfStructInput" styleClass="form-input-sm"
+                               promptText="Nilai custom..." prefWidth="140"/>
+                    <Button fx:id="btnPush" styleClass="btn-primary" onAction="#onStructPush">
+                        <graphic><FontIcon iconLiteral="fas-plus" iconSize="12"/></graphic>
+                        <text>Push / Enqueue</text>
+                    </Button>
+                    <Button fx:id="btnPop" styleClass="btn-secondary" onAction="#onStructPop">
+                        <graphic><FontIcon iconLiteral="fas-minus" iconSize="12"/></graphic>
+                        <text>Pop / Dequeue</text>
+                    </Button>
+                    <Button styleClass="btn-ghost" onAction="#onStructClear">
+                        <graphic><FontIcon iconLiteral="fas-trash" iconSize="12"/></graphic>
+                        <text>Clear</text>
+                    </Button>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblStructStatus" styleClass="viz-step-label" text=""/>
+                </HBox>
+            </VBox>
+
+            <!-- DRAG DROP PANEL -->
+            <VBox fx:id="dragPane" styleClass="viz-panel" spacing="16" visible="false" managed="false">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label styleClass="viz-title" text="Drag &amp; Drop Challenge"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ComboBox fx:id="cmbDragAlgo" styleClass="combo-box" prefWidth="180"
+                              onAction="#onDragAlgoChange"/>
+                </HBox>
+                <Label styleClass="drag-instruction"
+                       text="Klik langkah-langkah di bawah sesuai urutan yang benar untuk algoritma yang dipilih:"/>
+                <Label styleClass="drag-box-label" text="Langkah tersedia (klik untuk menyusun):"/>
+                <VBox fx:id="dragSourceBox" styleClass="drag-source-box" spacing="6"/>
+                <Label styleClass="drag-box-label" text="Urutan jawaban kamu:"/>
+                <VBox fx:id="dragTargetBox" styleClass="drag-target-box" spacing="6" minHeight="80"/>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button styleClass="btn-primary" onAction="#onCheckDrag">
+                        <graphic><FontIcon iconLiteral="fas-check" iconSize="12"/></graphic>
+                        <text>Cek Jawaban</text>
+                    </Button>
+                    <Button styleClass="btn-ghost" onAction="#onResetDrag">
+                        <graphic><FontIcon iconLiteral="fas-undo" iconSize="12"/></graphic>
+                        <text>Reset</text>
+                    </Button>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblDragResult" styleClass="drag-result" text="" wrapText="true"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>
