@@ -16,18 +16,26 @@ public class DataSeeder {
 
     private static final QuestionRepository repo = new QuestionRepository();
 
+    /**
+     * Memeriksa isi database. Jika masih kosong, metode ini akan memasukkan 30 pertanyaan kuis bawaan.
+     */
     public static void seedIfEmpty() {
+        // Cek apakah database sudah terisi soal sebelumnya
         if (repo.countAll() > 0) {
-            System.out.println("[Seeder] Database already has questions. Skipping seed.");
+            System.out.println("[Seeder] Database sudah terisi soal. Seeding dilewati.");
             return;
         }
-        System.out.println("[Seeder] Seeding 30 questions...");
+        System.out.println("[Seeder] Menanamkan (seeding) 30 soal awal...");
         List<Question> all = new ArrayList<>();
+        
+        // Gabungkan kumpulan soal Easy, Medium, dan Hard
         all.addAll(createEasyQuestions());
         all.addAll(createMediumQuestions());
         all.addAll(createHardQuestions());
+        
+        // Simpan setiap objek soal ke dalam database SQLite via repository
         all.forEach(repo::save);
-        System.out.println("[Seeder] Done! " + all.size() + " questions seeded.");
+        System.out.println("[Seeder] Selesai! " + all.size() + " soal berhasil ditambahkan.");
     }
 
     // ===================== EASY (10 soal) =====================

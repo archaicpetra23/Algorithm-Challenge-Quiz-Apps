@@ -3,14 +3,14 @@ package com.algorithmquiz.factory;
 import com.algorithmquiz.model.Question;
 
 /**
- * Factory Pattern: membuat objek Question berdasarkan level dan type.
- * Memisahkan logika pembuatan objek dari penggunaannya.
- * Sesuai prinsip OCP (Open/Closed Principle).
+ * QuestionFactory: Kelas yang menerapkan Creational Design Pattern, yaitu Factory Pattern.
+ * Memisahkan logika pembuatan objek Question dari kelas pengguna (client) untuk mengurangi ketergantungan (loose coupling).
+ * Mendukung prinsip Open/Closed Principle (OCP): Jika ingin menambahkan tipe pertanyaan baru, cukup tambahkan di switch-case factory ini.
  */
 public class QuestionFactory {
 
     /**
-     * Factory method utama - buat soal berdasarkan parameter.
+     * Metode factory utama untuk meng-instansiasi objek soal baru berdasarkan parameter jenis tipenya.
      */
     public static Question createQuestion(String level, String type, String questionText,
                                           String optA, String optB, String optC, String optD,
@@ -23,12 +23,12 @@ public class QuestionFactory {
                     correctAnswer, explanation, category, timeLimit);
             case "animation" -> createAnimation(level, questionText, optA, optB, optC, optD,
                     correctAnswer, explanation, category, timeLimit);
-            default -> throw new IllegalArgumentException("Unknown question type: " + type);
+            default -> throw new IllegalArgumentException("Tipe soal tidak dikenali: " + type);
         };
     }
 
     /**
-     * Buat soal multiple choice standar.
+     * Mempermudah pembuatan objek kuis Pilihan Ganda (Multiple Choice) standar.
      */
     public static Question createMultipleChoice(String level, String questionText,
                                                  String optA, String optB, String optC, String optD,
@@ -39,7 +39,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Buat soal drag-and-drop.
+     * Mempermudah pembuatan objek kuis tantangan Drag-and-Drop.
      */
     public static Question createDragDrop(String level, String questionText,
                                            String optA, String optB, String optC, String optD,
@@ -50,7 +50,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Buat soal berbasis animasi visualisasi.
+     * Mempermudah pembuatan objek kuis yang menampilkan animasi visualisasi di dalam soal.
      */
     public static Question createAnimation(String level, String questionText,
                                             String optA, String optB, String optC, String optD,
@@ -61,7 +61,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Buat soal easy dengan default 30 detik.
+     * Shorthand untuk membuat soal Easy (Pilihan Ganda) dengan batas waktu default 30 detik.
      */
     public static Question easyMC(String questionText,
                                    String optA, String optB, String optC, String optD,
@@ -71,7 +71,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Buat soal medium dengan default 25 detik.
+     * Shorthand untuk membuat soal Medium (Pilihan Ganda) dengan batas waktu default 25 detik.
      */
     public static Question mediumMC(String questionText,
                                      String optA, String optB, String optC, String optD,
@@ -81,7 +81,7 @@ public class QuestionFactory {
     }
 
     /**
-     * Buat soal hard dengan default 20 detik.
+     * Shorthand untuk membuat soal Hard (Pilihan Ganda) dengan batas waktu default 20 detik.
      */
     public static Question hardMC(String questionText,
                                    String optA, String optB, String optC, String optD,

@@ -15,9 +15,9 @@ import javafx.util.Duration;
 import java.util.*;
 
 /**
- * Controller untuk Learn Algorithm (Visualisasi interaktif).
- * Sesuai PRD FR-06, FR-07, FR-08, FR-09.
- * Mencakup: Sorting, BFS/DFS, Stack/Queue, Drag-and-Drop.
+ * LearnController: Kelas pengontrol halaman pembelajaran dan visualisasi interaktif (learn.fxml).
+ * Sesuai PRD FR-06 (Sorting), FR-07 (BFS/DFS), FR-08 (Stack/Queue), FR-09 (Drag-and-Drop).
+ * Bertanggung jawab mengatur visualisasi algoritma menggunakan JavaFX Canvas dan layout panel.
  */
 public class LearnController {
 
@@ -114,31 +114,61 @@ public class LearnController {
         if ("structure".equals(tab)) drawStructure();
     }
 
-    // ========== SORTING VISUALIZATION ==========
+    // ========== SORTING VISUALIZATION (VISUALISASI PENGURUTAN) ==========
+    
+    /**
+     * Inisialisasi awal untuk modul visualisasi pengurutan.
+     */
     private void setupSorting() {
+        // Daftarkan algoritma sorting yang didukung ke ComboBox
         cmbSortAlgo.getItems().addAll("Bubble Sort", "Selection Sort", "Insertion Sort");
         cmbSortAlgo.setValue("Bubble Sort");
+        // Array awal berantakan yang akan disortir secara visual
         sortArray = new int[]{64, 34, 25, 12, 22, 11, 90};
+        // Gambar diagram batang awal
         drawSorting(sortArray, -1, -1);
     }
 
+    /**
+     * Memulai animasi visualisasi pengurutan secara otomatis dari awal.
+     */
     @FXML private void onSortPlay() {
+        // Hentikan animasi berjalan sebelumnya jika ada
         if (sortTimeline != null) sortTimeline.stop();
+        
         String algo = cmbSortAlgo.getValue();
+        // Generate semua tahapan array di setiap pertukaran (swap) / iterasi
         sortSteps = generateSortSteps(algo, sortArray.clone());
-        sortStep = 0;
-        // Invert slider: higher value = faster (shorter duration)
+        sortStep = 0; // Reset langkah ke-0
+        
+        // Membaca input slider kecepatan (makin tinggi nilai slider, jeda detik makin kecil/cepat)
         double speed = speedSlider != null ? Math.max(0.05, 2.0 / speedSlider.getValue()) : 0.8;
+        
+        // Membuat Timeline JavaFX untuk merender tahapan array satu demi satu
         sortTimeline = new Timeline(new KeyFrame(Duration.seconds(speed), e -> {
-            if (sortStep >= sortSteps.size()) { sortTimeline.stop(); lblSortStep.setText("Selesai!"); return; }
+            // Jika sudah mencapai akhir langkah, hentikan animasi
+            if (sortStep >= sortSteps.size()) { 
+                sortTimeline.stop(); 
+                lblSortStep.setText("Selesai!"); 
+                return; 
+            }
+            
+            // Ambil array state pada langkah saat ini
             int[] state = sortSteps.get(sortStep);
+            // Elemen indeks hi1 dan hi2 adalah elemen yang sedang dibandingkan (diwarnai merah)
             int hi1 = state[state.length - 2];
             int hi2 = state[state.length - 1];
+            
+            // Gambar ulang elemen array pada canvas
             drawSorting(Arrays.copyOf(state, state.length - 2), hi1, hi2);
+            // Perbarui label langkah saat ini
             lblSortStep.setText("Step " + (sortStep + 1) + " / " + sortSteps.size());
             sortStep++;
         }));
+        
+        // Atur perulangan sebanyak total langkah pengurutan
         sortTimeline.setCycleCount(sortSteps.size() + 1);
+        // Mulai jalankan animasi
         sortTimeline.play();
     }
 
@@ -246,6 +276,9 @@ public class LearnController {
     // Repositioned so all nodes fit within canvas height ~260px
     private final double[][] NODE_POS = {{300,45},{150,135},{460,135},{75,225},{310,225},{530,225}};
 
+    /**
+     * Inisialisasi awal untuk modul penelusuran graf.
+     */
     private void setupGraph() {
         if (cmbGraphAlgo != null) {
             cmbGraphAlgo.getItems().addAll("BFS", "DFS");
@@ -253,28 +286,43 @@ public class LearnController {
         }
     }
 
+    /**
+     * Memulai animasi penelusuran graf (BFS/DFS) langkah demi langkah.
+     */
     @FXML private void onGraphPlay() {
         if (graphTimeline != null) graphTimeline.stop();
         String algo = cmbGraphAlgo != null ? cmbGraphAlgo.getValue() : "BFS";
+        
+        // Dapatkan urutan kunjungan node sesuai algoritma pilihan (BFS/DFS)
         List<Integer> order = "BFS".equals(algo) ? bfsOrder() : dfsOrder();
         int[] step = {0};
+        
+        // Animasikan proses kunjungan node setiap 0.8 detik sekali
         graphTimeline = new Timeline(new KeyFrame(Duration.seconds(0.8), e -> {
             if (step[0] >= order.size()) {
                 graphTimeline.stop();
                 if (lblGraphInfo != null) lblGraphInfo.setText(algo + " selesai! Semua node dikunjungi.");
                 return;
             }
+            
+            // Siapkan array dari seluruh node yang telah berhasil dikunjungi sampai step ini
             int[] visited = new int[step[0] + 1];
             for (int i = 0; i <= step[0]; i++) visited[i] = order.get(i);
+            
+            // Gambar ulang graf di canvas (node aktif berwarna merah, visited berwarna abu-abu gelap)
             drawGraph(visited, order.get(step[0]));
             if (lblGraphInfo != null)
                 lblGraphInfo.setText(algo + " -> Mengunjungi: " + NODE_LABELS[order.get(step[0])]);
             step[0]++;
         }));
+        
         graphTimeline.setCycleCount(order.size() + 1);
         graphTimeline.play();
     }
 
+    /**
+     * Mengembalikan tampilan graf ke keadaan awal (belum ada node yang dikunjungi).
+     */
     @FXML private void onGraphReset() {
         if (graphTimeline != null) graphTimeline.stop();
         drawGraph(new int[]{}, -1);
@@ -360,29 +408,54 @@ public class LearnController {
         onStructPush();
     }
 
+    /**
+     * Memasukkan data baru (Push untuk Stack atau Enqueue untuk Queue).
+     */
     @FXML private void onStructPush() {
         String val = tfStructInput != null ? tfStructInput.getText().trim() : "X";
         if (val.isEmpty()) val = "?";
         String type = cmbStructType != null ? cmbStructType.getValue() : "Stack";
+        
+        // Batasi ukuran tumpukan/antrean maksimum 8 elemen agar muat di canvas visualisasi
         if (structDeque.size() >= 8) {
             lblStructStatus.setText("[!] " + type + " penuh (maksimum 8)!");
             return;
         }
+        
+        // Stack: masukkan data ke atas (push)
+        // Queue: masukkan data ke belakang barisan (addLast)
         if ("Stack".equals(type)) structDeque.push(val);
         else structDeque.addLast(val);
+        
         if (tfStructInput != null) tfStructInput.clear();
         lblStructStatus.setText(("Stack".equals(type) ? "Push" : "Enqueue") + " \"" + val + "\" berhasil");
+        
+        // Render ulang perubahan bentuk struktur data ke canvas
         drawStructure();
     }
 
+    /**
+     * Mengeluarkan data terdepan (Pop untuk Stack atau Dequeue untuk Queue).
+     */
     @FXML private void onStructPop() {
         String type = cmbStructType != null ? cmbStructType.getValue() : "Stack";
-        if (structDeque.isEmpty()) { lblStructStatus.setText("[!] " + type + " kosong!"); return; }
+        if (structDeque.isEmpty()) { 
+            lblStructStatus.setText("[!] " + type + " kosong!"); 
+            return; 
+        }
+        
+        // Stack: keluarkan dari atas (LIFO - pop)
+        // Queue: keluarkan dari barisan terdepan (FIFO - pollFirst)
         String removed = "Stack".equals(type) ? structDeque.pop() : structDeque.pollFirst();
         lblStructStatus.setText(("Stack".equals(type) ? "Pop" : "Dequeue") + " \"" + removed + "\" berhasil");
+        
+        // Render ulang perubahan bentuk struktur data ke canvas
         drawStructure();
     }
 
+    /**
+     * Mengosongkan seluruh isi Stack/Queue.
+     */
     @FXML private void onStructClear() {
         structDeque.clear();
         lblStructStatus.setText("Struktur data dibersihkan");
@@ -476,12 +549,19 @@ public class LearnController {
         return lbl;
     }
 
+    /**
+     * Memeriksa kecocokan urutan langkah yang disusun oleh pengguna dengan kunci jawaban.
+     */
     @FXML private void onCheckDrag() {
         if (dragTargetBox == null) return;
+        
+        // Membaca daftar teks langkah-langkah yang ditaruh pengguna di box target
         List<String> placed = dragTargetBox.getChildren().stream()
             .filter(n -> n instanceof Label)
             .map(n -> ((Label) n).getText())
             .toList();
+            
+        // Bandingkan dengan urutan langkah yang asli/benar
         boolean correct = placed.equals(dragOrder);
         if (lblDragResult != null) {
             lblDragResult.setText(correct
@@ -492,6 +572,9 @@ public class LearnController {
         }
     }
 
+    /**
+     * Mengatur ulang tantangan drag-drop (mengacak kembali langkah-langkah).
+     */
     @FXML private void onResetDrag() { loadDragChallenge(); }
 
     private List<String> getDragSteps(String algo) {

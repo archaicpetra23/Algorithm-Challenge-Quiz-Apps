@@ -12,45 +12,55 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Entry point aplikasi Algorithm Challenge Quiz.
- * Bertanggung jawab menginisialisasi database dan menampilkan Main Menu.
+ * App: Entry point utama (Main Class) untuk menjalankan aplikasi JavaFX "Algorithm Challenge Quiz".
+ * Menginisialisasi koneksi database SQLite via Hibernate, melakukan seeding data soal kuis, serta memuat scene utama.
  */
 public class App extends Application {
 
-    private static Stage primaryStage;
+    private static Stage primaryStage; // Window utama aplikasi JavaFX (Stage)
 
+    /**
+     * Siklus hidup (lifecycle) start JavaFX. Dijalankan otomatis setelah launch().
+     */
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
 
-        // Inisialisasi database & seed data
+        // Inisialisasi session factory database SQLite
         DatabaseManager.init();
+        // Lakukan pengisian data soal (30 soal bawaan) jika database masih kosong
         DataSeeder.seedIfEmpty();
 
-        // Load Main Menu
+        // Navigasikan stage ke halaman Menu Utama (main-menu.fxml)
         navigateTo("main-menu");
 
+        // Konfigurasi parameter tampilan jendela (window) utama
         stage.setTitle("Algorithm Challenge Quiz");
         stage.setMinWidth(900);
         stage.setMinHeight(650);
         stage.setResizable(true);
-        stage.show();
+        stage.show(); // Tampilkan jendela ke layar monitor
     }
 
     /**
-     * Navigasi ke scene berdasarkan nama FXML.
-     * @param fxmlName nama file FXML (tanpa .fxml)
+     * Membantu mempermudah navigasi perpindahan layar berdasarkan nama file FXML.
+     * Secara otomatis menyematkan stylesheet file CSS global (app.css).
+     * @param fxmlName nama file layout fxml (tanpa ekstensi .fxml)
      */
     public static void navigateTo(String fxmlName) throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/" + fxmlName + ".fxml"));
         Scene scene = new Scene(loader.load());
+        // Tambahkan file CSS eksternal ke dalam scene untuk styling premium
         scene.getStylesheets().add(Objects.requireNonNull(
                 App.class.getResource("/css/app.css")).toExternalForm());
         primaryStage.setScene(scene);
     }
 
     /**
-     * Navigasi dengan data (menggunakan controller setter).
+     * Membantu navigasi perpindahan layar dengan mengembalikan objek FXMLLoader.
+     * Digunakan ketika data perlu diteruskan (passing data) ke controller halaman tujuan sebelum ditampilkan.
+     * @param fxmlName nama file layout fxml (tanpa ekstensi .fxml)
+     * @return objek FXMLLoader aktif untuk scene yang dimuat
      */
     public static FXMLLoader loadFXML(String fxmlName) throws IOException {
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/" + fxmlName + ".fxml"));
@@ -62,10 +72,12 @@ public class App extends Application {
     }
 
     public static Stage getPrimaryStage() {
+        // Mengembalikan instance window utama
         return primaryStage;
     }
 
     public static void main(String[] args) {
+        // Bootstrapping aplikasi JavaFX
         launch(args);
     }
 }
